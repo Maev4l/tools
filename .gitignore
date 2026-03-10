@@ -1,7 +1,10 @@
 node_modules/
-.serverless/
-*.http
-.bin/
-.dist/
-.terraform/
+dist/
+
 infra.json
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfplan
+tfplan
