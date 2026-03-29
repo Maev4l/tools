@@ -2,16 +2,14 @@
   "name": "tools",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "frontend:dev": "yarn workspace @tools/client dev",
-    "frontend:build": "yarn workspace @tools/client build",
-    "frontend:deploy": "yarn workspace @tools/client deploy && yarn workspace @tools/infrastructure invalidate-cloudfront",
-    "infra:init": "yarn workspace @tools/infrastructure init",
-    "infra:plan": "yarn workspace @tools/infrastructure plan",
-    "infra:apply": "yarn workspace @tools/infrastructure apply",
-    "infra:output": "yarn workspace @tools/infrastructure output"
+    "infra:plan": "terraform -chdir=packages/infrastructure plan",
+    "infra:apply": "terraform -chdir=packages/infrastructure apply -auto-approve",
+    "infra:output": "terraform -chdir=packages/infrastructure output",
+    "frontend:dev": "yarn --cwd packages/client dev",
+    "frontend:build": "yarn --cwd packages/client build",
+    "frontend:sync": "aws s3 sync packages/client/dist s3://$(terraform -chdir=packages/infrastructure output -raw frontendBucket) --delete",
+    "frontend:invalidate": "aws cloudfront create-invalidation --path '/*' --distribution-id $(terraform -chdir=packages/infrastructure output -raw frontendDistribution)",
+    "frontend:deploy": "yarn frontend:build && yarn frontend:sync && yarn frontend:invalidate"
   }
 }
