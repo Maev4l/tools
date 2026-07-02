@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["react", "react-hooks"],
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "ignorePatterns": ["dist/", ".dist/", "node_modules/"],
+  "rules": {
+    "react/jsx-no-target-blank": "warn",
+    "react/no-unknown-property": ["error", { "ignore": ["cmdk-input-wrapper"] }],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "no-console": "off"
+  }
+}
